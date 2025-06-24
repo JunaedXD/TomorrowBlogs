@@ -1,0 +1,75 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Contact</title>
+    <link rel="stylesheet" href="css/contact_style.css">
+    <script defer src="js/contact_app.js"></script>
+</head>
+<body>
+        <div class="overlay" id="overlay" onclick="toggleMenu()"></div>
+
+    <nav>
+        <div class="nav-left">
+            <div class="logo">Tomorrow Blogs.</div>
+        </div>
+<div class="search-box">
+  <input type="text" id="searchInput" placeholder="Search..." />
+</div>
+
+<div id="searchResults" class="search-results"></div>
+
+        <div class="menu-icon" onclick="toggleMenu()">☰</div>
+    </nav>
+
+    <div class="side-menu" id="sideMenu">
+        <div class="theme-toggle-icon" onclick="toggleTheme()">
+            <svg class="moon" xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24">
+                <path d="M21 12.79A9 9 0 0111.21 3a9 9 0 108.58 9.79z" />
+            </svg>
+            <svg class="sun" xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24">
+                <circle cx="12" cy="12" r="5" />
+                <path
+                    d="M12 1v2M12 21v2M4.22 4.22l1.42 1.42M18.36 18.36l1.42 1.42M1 12h2M21 12h2M4.22 19.78l1.42-1.42M18.36 5.64l1.42-1.42" />
+            </svg>
+        </div>
+        <span class="close-btn" onclick="toggleMenu()">&times;</span>
+        <a href="index.html">Home</a>
+        <div class="has-submenu">
+            <a href="#">Categories</a>
+            <div class="submenu">
+                <a href="#">Politics</a>
+                <a href="#">Culture</a>
+                <a href="#">Technology</a>
+                <a href="#">Health</a>
+            </div>
+        </div>
+        <a href="#">About</a>
+        <a href="#">Contact</a>
+    </div>
+<div class="contact">
+  <h1>Contact Us</h1>
+  <form action="#" method="post">
+    <label for="name">Name</label>
+    <input type="text" id="name" name="name" required>
+
+    <label for="email">Email</label>
+    <input type="email" id="email" name="email" required>
+
+    <label for="message">Message</label>
+    <textarea id="message" name="message" rows="5" required></textarea>
+
+    <input type="submit" value="Send Message">
+  </form>
+</div>
+
+  <div class="map-container">
+    <iframe src="https://www.google.com/maps/embed?pb=!1m18!1m12!1m3!1d58744.90431200137!2d88.78940815922542!3d23.040050051651924!2m3!1f0!2f0!3f0!3m2!1i1024!2i768!4f13.1!3m3!1m2!1s0x39ff35b2b703623f%3A0xfa3b81f8f922ce3d!2sBangaon%2C%20West%20Bengal!5e0!3m2!1sen!2sin!4v1750773661437!5m2!1sen!2sin" width="600" height="450" style="border:0;" allowfullscreen="" loading="lazy" referrerpolicy="no-referrer-when-downgrade" width="600" height="450" style="border:0;" allowfullscreen="" loading="lazy" referrerpolicy="no-referrer-when-downgrade" allowfullscreen="" loading="lazy" referrerpolicy="no-referrer-when-downgrade"></iframe>
+  </div>
+
+
+
+  <div class="footer">&copy; 2025 Tomorrow Blogs</div>
+</body>
+</html>

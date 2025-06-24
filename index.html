@@ -1,0 +1,114 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>Tomorrow Blogs</title>
+    <link rel="stylesheet" href="css/style.css">
+    <script defer src="js/app.js"></script>
+</head>
+
+<body>
+    <div class="overlay" id="overlay" onclick="toggleMenu()"></div>
+
+    <nav>
+        <div class="nav-left">
+            <div class="logo">Tomorrow Blogs.</div>
+        </div>
+<div class="search-box">
+  <input type="text" id="searchInput" placeholder="Search..." />
+</div>
+
+<div id="searchResults" class="search-results"></div>
+
+        <div class="menu-icon" onclick="toggleMenu()">☰</div>
+    </nav>
+
+    <div class="side-menu" id="sideMenu">
+        <div class="theme-toggle-icon" onclick="toggleTheme()">
+            <svg class="moon" xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24">
+                <path d="M21 12.79A9 9 0 0111.21 3a9 9 0 108.58 9.79z" />
+            </svg>
+            <svg class="sun" xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24">
+                <circle cx="12" cy="12" r="5" />
+                <path
+                    d="M12 1v2M12 21v2M4.22 4.22l1.42 1.42M18.36 18.36l1.42 1.42M1 12h2M21 12h2M4.22 19.78l1.42-1.42M18.36 5.64l1.42-1.42" />
+            </svg>
+        </div>
+        <span class="close-btn" onclick="toggleMenu()">&times;</span>
+        <a href="#">Home</a>
+        <div class="has-submenu">
+            <a href="#">Categories</a>
+            <div class="submenu">
+                <a href="#">Politics</a>
+                <a href="#">Culture</a>
+                <a href="#">Technology</a>
+                <a href="#">Health</a>
+            </div>
+        </div>
+        <a href="#">About</a>
+        <a href="contact.html">Contact</a>
+    </div>
+
+  <div class="layout-wrapper">
+    <div class="side-column">
+      <div class="card" style="background-image: url('https://source.unsplash.com/400x300/?nature,flower');">
+        <div class="text">
+          <small>Apr. 14th, 2022</small>
+          <h4>AI can now kill those annoying cookie pop-ups</h4>
+        </div>
+      </div>
+      <div class="card" style="background-image: url('https://source.unsplash.com/400x300/?mountains,sunset');">
+        <div class="text">
+          <small>Apr. 14th, 2022</small>
+          <h4>Don’t assume your user data in the cloud is safe</h4>
+        </div>
+      </div>
+    </div>
+    <div class="center-column">
+      <div class="slideshow" id="slideshow">
+        <div class="slide active" style="background-image: url('https://images.ctfassets.net/hrltx12pl8hq/28ECAQiPJZ78hxatLTa7Ts/2f695d869736ae3b0de3e56ceaca3958/free-nature-images.jpg?fit=fill&w=1200&h=630');">
+          <div class="text">
+            <small>Apr. 14th, 2022</small>
+            <h4>Why is my internet so slow?</h4>
+          </div>
+        </div>
+        <div class="slide" style="background-image: url('https://images.pexels.com/photos/414612/pexels-photo-414612.jpeg?cs=srgb&dl=pexels-souvenirpixels-414612.jpg&fm=jpg');">
+          <div class="text">
+            <small>Apr. 15th, 2022</small>
+            <h4>The future of artificial intelligence</h4>
+          </div>
+        </div>
+        <div class="slide" style="background-image: url('https://images.ctfassets.net/hrltx12pl8hq/3Z1N8LpxtXNQhBD5EnIg8X/975e2497dc598bb64fde390592ae1133/spring-images-min.jpg');">
+          <div class="text">
+            <small>Apr. 16th, 2022</small>
+            <h4>Exploring the wonders of space</h4>
+          </div>
+        </div>
+      </div>
+    </div>
+    <div class="side-column">
+      <div class="card" style="background-image: url('https://source.unsplash.com/400x300/?eye,makeup');">
+        <div class="text">
+          <small>Apr. 14th, 2022</small>
+          <h4>Startup vs corporate: What job suits you best?</h4>
+        </div>
+      </div>
+      <div class="card" style="background-image: url('https://source.unsplash.com/400x300/?tiger,jungle');">
+        <div class="text">
+          <small>Apr. 14th, 2022</small>
+          <h4>Thought you loved Python? Wait until you meet Rust</h4>
+        </div>
+      </div>
+    </div>
+  </div>
+
+
+
+
+ <div class="footer">&copy; 2025 Tomorrow Blogs</div>
+
+</body>
+
+</html>
