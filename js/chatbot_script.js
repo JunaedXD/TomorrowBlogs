@@ -166,3 +166,35 @@ document.addEventListener("mouseup", () => {
 
 enableDragging(toggleChat);
 enableDragging(chatbotBox);
+
+
+
+
+chatbotBox.addEventListener("touchstart", (e) => {
+  isDragging = true;
+  const touch = e.touches[0];
+  offsetX = touch.clientX - chatbotBox.getBoundingClientRect().left;
+  offsetY = touch.clientY - chatbotBox.getBoundingClientRect().top;
+  document.body.style.userSelect = "none";
+}, { passive: false });
+
+document.addEventListener("touchmove", (e) => {
+  if (isDragging) {
+    const touch = e.touches[0];
+    let x = touch.clientX - offsetX;
+    let y = touch.clientY - offsetY;
+    const clamp = (value, min, max) => Math.max(min, Math.min(max, value));
+    x = clamp(x, 0, window.innerWidth - chatbotBox.offsetWidth);
+    y = clamp(y, 0, window.innerHeight - chatbotBox.offsetHeight);
+    chatbotBox.style.left = `${x}px`;
+    chatbotBox.style.top = `${y}px`;
+    chatbotBox.style.right = "auto";
+    chatbotBox.style.bottom = "auto";
+    chatbotBox.style.position = "fixed";
+  }
+}, { passive: false });
+
+document.addEventListener("touchend", () => {
+  isDragging = false;
+  document.body.style.userSelect = "auto";
+});
