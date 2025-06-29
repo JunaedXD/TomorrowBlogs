@@ -7,6 +7,8 @@
     <title>Tomorrow Blogs</title>
     <link rel="stylesheet" href="css/style.css">
     <script defer src="js/app.js"></script>
+    <link rel="stylesheet" href="css/chatbot_style.css">
+    <script defer src="js/chatbot_script.js"></script>
 </head>
 
 <body>
@@ -104,7 +106,22 @@
     </div>
   </div>
 
+  <div class="chatbot-toggle draggable" id="toggle-chat">
+    💬
+    <span class="close-icon" id="close-toggle">✖</span>
+  </div>
 
+  <div class="chatbot-container hidden" id="chatbot-box" style="  inset: 0px auto auto 1180px;">
+    <div class="chat-header">
+      🤖 Blog Assistant
+      <span id="close-chat">✖</span>
+    </div>
+    <div class="chat-window" id="chat-window"></div>
+    <div class="chat-input-area" style="color: black;">
+      <input type="text" id="user-input" placeholder="Type your message..." autocomplete="off"/>
+      <button id="send-btn">Send</button>
+    </div>
+  </div>
 
 
  <div class="footer">&copy; 2025 Tomorrow Blogs</div>

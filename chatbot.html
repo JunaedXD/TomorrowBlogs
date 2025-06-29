@@ -1,0 +1,318 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0"/>
+  <style>
+    body {
+      font-family: 'Segoe UI', sans-serif;
+      margin: 0;
+      background: #f0f2f5;
+    }
+
+    .chatbot-toggle {
+      position: fixed;
+      bottom: 20px;
+      right: 20px;
+      background: #4a90e2;
+      color: #fff;
+      width: 50px;
+      height: 50px;
+      border-radius: 50%;
+      font-size: 24px;
+      display: flex;
+      justify-content: center;
+      align-items: center;
+      cursor: move;
+      z-index: 1000;
+      box-shadow: 0 4px 12px rgba(0, 0, 0, 0.2);
+      user-select: none;
+    }
+
+    .close-icon {
+      position: absolute;
+      top: -6px;
+      right: -6px;
+      background: #ff4d4d;
+      border-radius: 50%;
+      font-size: 12px;
+      padding: 2px 5px;
+      cursor: pointer;
+    }
+
+    .chatbot-container {
+      position: fixed;
+      bottom: 80px;
+      right: 20px;
+      width: 320px;
+      background: #fff;
+      border-radius: 15px;
+      box-shadow: 0 5px 25px rgba(0,0,0,0.3);
+      display: flex;
+      flex-direction: column;
+      overflow: hidden;
+      z-index: 999;
+    }
+
+    .hidden {
+      display: none;
+    }
+
+    .chat-header {
+      background: #4a90e2;
+      color: white;
+      padding: 12px;
+      font-weight: bold;
+      display: flex;
+      justify-content: space-between;
+      align-items: center;
+    }
+
+    .chat-window {
+      padding: 12px;
+      height: 320px;
+      overflow-y: auto;
+      display: flex;
+      flex-direction: column;
+      gap: 10px;
+      background: #fafafa;
+    }
+
+    .chat-input-area {
+      display: flex;
+      padding: 10px;
+      border-top: 1px solid #ddd;
+      background: #f9f9f9;
+    }
+
+    #user-input {
+      flex: 1;
+      padding: 8px;
+      border-radius: 8px;
+      border: 1px solid #ccc;
+    }
+
+    #send-btn {
+      background: #4a90e2;
+      color: white;
+      padding: 8px 12px;
+      margin-left: 10px;
+      border: none;
+      border-radius: 8px;
+      cursor: pointer;
+    }
+
+    .user-message, .bot-message {
+      max-width: 80%;
+      padding: 10px;
+      border-radius: 12px;
+      line-height: 1.4;
+    }
+
+    .user-message {
+      background: #e1ffc7;
+      align-self: flex-end;
+    }
+
+    .bot-message {
+      background: #f1f0f0;
+      align-self: flex-start;
+      animation: fadeIn 0.3s ease-in;
+    }
+
+    @keyframes fadeIn {
+      from { opacity: 0; transform: translateY(10px); }
+      to { opacity: 1; transform: translateY(0); }
+    }
+  </style>
+</head>
+<body>
+
+  <div class="chatbot-toggle draggable" id="toggle-chat">
+    💬
+    <span class="close-icon" id="close-toggle">✖</span>
+  </div>
+
+  <div class="chatbot-container hidden" id="chatbot-box">
+    <div class="chat-header">
+      🤖 Blog Assistant
+      <span id="close-chat">✖</span>
+    </div>
+    <div class="chat-window" id="chat-window"></div>
+    <div class="chat-input-area">
+      <input type="text" id="user-input" placeholder="Type your message..." autocomplete="off"/>
+      <button id="send-btn">Send</button>
+    </div>
+  </div>
+
+  <script>
+// script.js
+
+// Get DOM elements
+const sendBtn = document.getElementById("send-btn");
+const userInput = document.getElementById("user-input");
+const chatWindow = document.getElementById("chat-window");
+const toggleChat = document.getElementById("toggle-chat");
+const chatbotBox = document.getElementById("chatbot-box");
+const closeChat = document.getElementById("close-chat");
+const closeToggle = document.getElementById("close-toggle");
+
+// Apply transitions for slide effect
+chatbotBox.style.transition = "opacity 0.3s ease, transform 0.3s ease";
+chatbotBox.style.opacity = 0;
+chatbotBox.style.transform = "translateY(20px)";
+
+// Add pointer cursor to toggle and close icons
+toggleChat.style.cursor = "pointer";
+closeChat.style.cursor = "pointer";
+
+// Load saved chat history from localStorage when page loads
+window.onload = () => {
+  const saved = localStorage.getItem("chatHistory");
+  if (saved) chatWindow.innerHTML = saved;
+  chatWindow.scrollTop = chatWindow.scrollHeight;
+};
+
+// Event listener for sending message via button click or Enter key
+sendBtn.addEventListener("click", () => sendMessage());
+userInput.addEventListener("keypress", e => {
+  if (e.key === "Enter") sendMessage();
+});
+
+// Show chatbot box when toggle icon is clicked (not the close icon), and hide toggle icon
+toggleChat.addEventListener("click", (e) => {
+  if (!e.target.classList.contains("close-icon")) {
+    const iconRect = toggleChat.getBoundingClientRect();
+    chatbotBox.classList.remove("hidden");
+
+    const clamp = (value, min, max) => Math.max(min, Math.min(max, value));
+    const left = clamp(iconRect.left, 0, window.innerWidth - chatbotBox.offsetWidth);
+    const top = clamp(iconRect.top, 0, window.innerHeight - chatbotBox.offsetHeight);
+
+    chatbotBox.style.left = `${left}px`;
+    chatbotBox.style.top = `${top}px`;
+    chatbotBox.style.right = "auto";
+    chatbotBox.style.bottom = "auto";
+    chatbotBox.style.position = "fixed";
+    chatbotBox.style.opacity = 1;
+    chatbotBox.style.transform = "translateY(0)";
+
+    toggleChat.style.display = "none";
+  }
+});
+
+// Hide chatbot box and show toggle icon again
+closeChat.addEventListener("click", () => {
+  chatbotBox.style.opacity = 0;
+  chatbotBox.style.transform = "translateY(20px)";
+  setTimeout(() => {
+    chatbotBox.classList.add("hidden");
+    toggleChat.style.display = "flex";
+  }, 300);
+});
+
+// Hide the floating toggle button when its close icon is clicked
+closeToggle.addEventListener("click", () => {
+  toggleChat.style.display = "none";
+});
+
+// Handle sending user message and generating bot reply
+function sendMessage() {
+  const message = userInput.value.trim();
+  if (!message) return;
+  addUserMessage(message);
+  userInput.value = "";
+  setTimeout(() => addBotMessage(getBotReply(message)), 600);
+}
+
+// Append user message to chat window
+function addUserMessage(msg) {
+  const div = document.createElement("div");
+  div.className = "user-message";
+  div.innerText = msg;
+  chatWindow.appendChild(div);
+  updateScroll();
+  saveHistory();
+}
+
+// Append bot message to chat window
+function addBotMessage(msg) {
+  const div = document.createElement("div");
+  div.className = "bot-message";
+  div.innerHTML = msg;
+  chatWindow.appendChild(div);
+  updateScroll();
+  saveHistory();
+}
+
+// Scroll to bottom of chat window
+function updateScroll() {
+  chatWindow.scrollTop = chatWindow.scrollHeight;
+}
+
+// Save current chat history to localStorage
+function saveHistory() {
+  localStorage.setItem("chatHistory", chatWindow.innerHTML);
+}
+
+// Simulate bot reply based on user input
+function getBotReply(input) {
+  input = input.toLowerCase();
+  if (input.includes("hello") || input.includes("hi")) {
+    return "Hello! 👋 How can I help you today?";
+  } else if (input.includes("latest post") || input.includes("recent blog")) {
+    return "Check out our <a href='/blog/latest' target='_blank'>latest blog post</a>!";
+  } else if (input.includes("about")) {
+    return "This blog shares insights on tech, health, travel, and lifestyle.";
+  } else if (input.includes("contact")) {
+    return "You can <a href='/contact' target='_blank'>contact us here</a>.";
+  } else if (input.includes("categories")) {
+    return "Explore our <a href='/categories' target='_blank'>blog categories</a>.";
+  } else {
+    return "I'm still learning. Try asking about <strong>'latest post'</strong>, <strong>'contact'</strong>, or <strong>'categories'</strong>.";
+  }
+}
+
+// Drag functionality for chatbot toggle button and chatbot box
+let isDragging = false;
+let offsetX, offsetY;
+
+function enableDragging(element) {
+  element.addEventListener("mousedown", (e) => {
+    isDragging = true;
+    offsetX = e.clientX - element.getBoundingClientRect().left;
+    offsetY = e.clientY - element.getBoundingClientRect().top;
+    document.body.style.userSelect = "none";
+  });
+}
+
+document.addEventListener("mousemove", (e) => {
+  if (isDragging) {
+    let x = e.clientX - offsetX;
+    let y = e.clientY - offsetY;
+    const clamp = (value, min, max) => Math.max(min, Math.min(max, value));
+    x = clamp(x, 0, window.innerWidth - chatbotBox.offsetWidth);
+    y = clamp(y, 0, window.innerHeight - chatbotBox.offsetHeight);
+
+    chatbotBox.style.left = `${x}px`;
+    chatbotBox.style.top = `${y}px`;
+    chatbotBox.style.right = "auto";
+    chatbotBox.style.bottom = "auto";
+    chatbotBox.style.position = "fixed";
+  }
+});
+
+document.addEventListener("mouseup", () => {
+  isDragging = false;
+  document.body.style.userSelect = "auto";
+});
+
+enableDragging(toggleChat);
+enableDragging(chatbotBox);
+
+
+
+
+  </script>
+</body>
+</html>
